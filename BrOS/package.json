@@ -1,0 +1,10 @@
+{
+  "name": "bros",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "start": "echo \"No start script configured. Run your dev server manually.\""
+  }
+}

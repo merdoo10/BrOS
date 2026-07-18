@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width= initial-scale=1.0" />
+    <title>BrOS</title>
+  </head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Abel&family=Advent+Pro:ital,wght@0,100..900;1,100..900&family=Cinzel:wght@400..900&family=Geist+Pixel&family=Imperial+Script&family=Indie+Flower&family=Quicksand:wght@300..700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Abel&family=Advent+Pro:ital,wght@0,100..900;1,100..900&family=Cinzel:wght@400..900&family=Geist+Pixel&family=Imperial+Script&family=Indie+Flower&family=Quicksand:wght@300..700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    h1 {
+      text-align: center;
+      position: relative;
+      top: 250px;
+      left: 675px;
+      color: white;
+      font-family: Cinzel;
+      animation: fadeIn 0.7s;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 3px solid white;
+      width: 0;
+      animation:
+        typing 1.5s steps(4) forwards,
+        blink 0.7s step-end infinite;
+    }
+    .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 18px;
+      animation: slideUp 0.6s ease-out;
+    }
+    button {
+      width: 100px;
+      height: 60px;
+      border-radius: 12px;
+      font-family: Geist Pixel;
+      color: black;
+      background-color: darkgray;
+      transition: transform 0.2 ease box-shadow 0.2s ease;
+    }
+    body {
+      background-color: black;
+      background-image: url(dap-dap-up.gif);
+      animation: bgPulse 8s ease-in-out infinite;
+    }
+    .hesap1 {
+      animation: fadeIn 0.5s;
+    }
+    .notlar {
+      animation: fadeIn 2s;
+    }
+    .terminal {
+      animation: fadeIn 3s;
+    }
+    .ai {
+      animation: fadeIn 4s;
+    }
+    .gym {
+      animation: fadeIn 5s;
+    }
+    .clickgame {
+      animation: fadeIn 6s;
+    }
+    .muzik{
+
+      animation: fadeIn 7s;
+    }
+    .haber{
+
+      animation: fadeIn 8s;
+    }
+    img {
+      position: absolute;
+      width: 200px;
+      left: 20px;
+      top: 200px;
+      opacity: 0.7;
+    }
+    button:hover {
+      color: white;
+      background-color: rgba(87, 76, 76, 0.3);
+      transform: translateX(-3px) scale(1.2);
+      box-shadow: 0 6px 14px rgba(255, 255, 255, 0.2);
+    }
+    .date {
+      position: relative;
+      left: 1300px;
+      top: 270px;
+      background-color: rgba(255, 255, 255, 0.3);
+      text-align: center;
+      width: 200px;
+      color: white;
+      font-size: 20px;
+      font-family: Geist Pixel;
+      animation: bounceIn 0.8s ease;
+    }
+    .clock{
+width: 150px;
+height: 150px;
+border: 10px solid #333;
+border-radius: 50%;
+position: relative;
+top: 220px;
+background: #f9f9f9;
+left: 1325px;
+cursor: grab;
+user-select: none;
+
+
+    }
+    .clock.is-dragging {
+      cursor: grabbing;
+    }
+.hand{
+position: absolute;
+bottom: 50%;
+left: 50%;
+transform-origin: bottom;
+border-radius: 50px;
+
+
+}
+.hour { width: 6px; height: 30px; background: #000; }
+.minute { width: 4px; height: 50px; background: #555; }
+.second { width: 2px; height: 70px; background: #f00; }
+    #TimeElement {
+      position: fixed;
+      bottom: 0;
+      right: 60px;
+      top: 550px;
+      height: 30px;
+      
+      font-size: 20px;
+      color: #fff;
+      z-index: 1000;
+      background-color: rgba(255, 255, 255, 0.3);
+      width: 100px;
+      text-align: center;
+      font-family: Geist Pixel;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes typing {
+      to {
+        width: 4ch;
+      }
+    }
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      60% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    @keyframes bgPulse {
+      0%,
+      100% {
+        background-color: #000;
+      }
+      50% {
+        background-color: #0a0a12;
+      }
+    }
+    @keyframes blink {
+      50% {
+        border-color: transparent;
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.6;
+      }
+    }
+  </style>
+  <body>
+    <h1>BrOS</h1>
+
+    <div class="container">
+      <a href="">
+        <button class="hesap1">HM</button>
+      </a>
+      <a href="">
+        <button class="notlar">Notlar</button>
+      </a>
+      <a href="terminal.tsx">
+        <button class="terminal">Terminal</button>
+      </a>
+      <a href="">
+        <button class="ai">AI</button>
+      </a>
+      <a href="">
+        <button class="gym">Spor</button>
+      </a>
+      <a href="">
+        <button class="clickgame">Click</button>
+      </a>
+      <a href="">
+        <button class="muzik">Muzik</button>
+      </a>
+      <a href="">
+        <button class="haber">Haber</button>
+      </a>
+    </div>
+   <div class="clock">
+<div class="hand hour" id="hour-hand"></div>
+<div class="hand minute" id="minute-hand"></div>
+<div class="hand second" id="second-hand"></div>
+
+   </div>
+    <p id="TimeElement">Time</p>
+    <script src="stuff.js"></script>
+    <p class="date">Bugunun Tarihi: <span id="current-date"></span></p>
+    <script>
+      document.getElementById("current-date").innerText =
+        new Date().toLocaleDateString();
+    </script>
+    
+  </body>
+</html>
