@@ -1,0 +1,318 @@
+html {
+  scrollbar-gutter: stable;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #0a0910;
+  overflow-x: hidden;
+  font-family: Quicksand, Arial, Helvetica, sans-serif;
+  color: #cfcbe0;
+}
+
+.bg-fx {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at 20% 15%,
+      rgba(26, 35, 255, 0.1),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 80% 85%,
+      rgba(226, 27, 218, 0.1),
+      transparent 55%
+    ),
+    #0a0910;
+}
+
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+.blob-1 {
+  width: 38vw;
+  height: 38vw;
+  max-width: 520px;
+  max-height: 520px;
+  background: rgba(255, 163, 26, 0.65);
+  top: -8%;
+  left: -8%;
+  animation: float1 16s ease-in-out infinite;
+}
+.blob-2 {
+  width: 32vw;
+  height: 32vw;
+  max-width: 460px;
+  max-height: 460px;
+  background: rgba(26, 35, 255, 0.65);
+  top: 45%;
+  right: -10%;
+  animation: float2 20s ease-in-out infinite;
+}
+.blob-3 {
+  width: 30vw;
+  height: 30vw;
+  max-width: 420px;
+  max-height: 420px;
+  background: rgba(226, 27, 218, 0.6);
+  bottom: -12%;
+  left: 22%;
+  animation: float3 19s ease-in-out infinite;
+}
+.blob-4 {
+  width: 24vw;
+  height: 24vw;
+  max-width: 340px;
+  max-height: 340px;
+  background: rgba(255, 232, 26, 0.55);
+  top: 8%;
+  right: 22%;
+  animation: float4 14s ease-in-out infinite;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 46px 46px;
+  animation: gridMove 34s linear infinite;
+}
+
+@keyframes float1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(6vw, 5vh) scale(1.15);
+  }
+}
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-5vw, 4vh) scale(0.9);
+  }
+}
+@keyframes float3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(4vw, -6vh) scale(1.1);
+  }
+}
+@keyframes float4 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-3vw, -4vh) scale(1.2);
+  }
+}
+@keyframes gridMove {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(46px, 46px);
+  }
+}
+
+.placeholder-shell {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px 60px;
+  box-sizing: border-box;
+}
+
+.back-button {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  padding: 12px 22px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  font-family: Germania One;
+  font-size: 14px;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+.back-button:hover {
+  transform: translateX(-3px) scale(1.05);
+  background: rgba(255, 163, 26, 0.14);
+  box-shadow: 0 6px 18px rgba(255, 163, 26, 0.35);
+}
+.back-button:focus-visible {
+  outline: 2px solid #ffa31a;
+  outline-offset: 3px;
+}
+.back-button::before {
+  content: "← ";
+}
+
+.placeholder-card {
+  text-align: center;
+  padding: 56px 48px 48px;
+  background: rgba(15, 12, 26, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  backdrop-filter: blur(14px);
+  max-width: 540px;
+  width: 100%;
+  animation: cardRise 0.8s ease-out;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+}
+@keyframes cardRise {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.placeholder-icon {
+  font-size: 72px;
+  line-height: 1;
+  display: inline-block;
+  filter: drop-shadow(0 0 24px rgba(226, 27, 218, 0.55))
+    drop-shadow(0 0 12px rgba(26, 35, 255, 0.45));
+  animation: iconPulse 2.4s ease-in-out infinite;
+}
+@keyframes iconPulse {
+  0%,
+  100% {
+    transform: scale(1) rotate(-2deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(2deg);
+  }
+}
+
+h1 {
+  margin: 18px 0 6px;
+  color: #fff;
+  font-family: Germania One;
+  letter-spacing: 0.04em;
+  font-size: 42px;
+  text-shadow:
+    0 0 18px rgba(255, 163, 26, 0.55),
+    0 0 40px rgba(226, 27, 218, 0.25);
+}
+
+.placeholder-subtitle {
+  color: #ffa31a;
+  font-family: Quicksand;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  margin: 0 0 12px;
+  font-style: oblique;
+}
+
+.placeholder-description {
+  color: #cfcbe0;
+  font-size: 18px;
+  line-height: 1.65;
+  margin: 12px auto 22px;
+  max-width: 380px;
+}
+
+.placeholder-status {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255, 163, 26, 0.1);
+  border: 1px solid rgba(255, 163, 26, 0.45);
+  color: #ffd215;
+  font-family: Geist Pixel;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  animation: glowPulse 2s ease-in-out infinite;
+  user-select: none;
+}
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(255, 163, 26, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 26px rgba(255, 163, 26, 0.55);
+  }
+}
+
+.placeholder-features {
+  margin-top: 28px;
+  padding: 0;
+  text-align: left;
+  display: inline-block;
+  font-family: Quicksand;
+}
+.placeholder-features li {
+  padding: 6px 0;
+  list-style: none;
+  color: #cfcbe0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.placeholder-features li::before {
+  content: "▸ ";
+  color: #ffa31a;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-blob,
+  .bg-grid,
+  .placeholder-card,
+  .placeholder-icon,
+  .placeholder-status {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .placeholder-card {
+    padding: 40px 28px 36px;
+  }
+  h1 {
+    font-size: 32px;
+  }
+  .placeholder-icon {
+    font-size: 56px;
+  }
+  .back-button {
+    top: 18px;
+    left: 18px;
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}

@@ -72,6 +72,14 @@ function updateTime() {
     }
 }
 
+function updateCurrentDate() {
+    const dateText = document.getElementById('current-date');
+
+    if (dateText) {
+        dateText.textContent = new Date().toLocaleDateString();
+    }
+}
+
 function dragElement(element, handle = element) {
     let startX = 0;
     let startY = 0;
@@ -257,6 +265,224 @@ function initializeJournalPages() {
     updatePageDisplay();
 }
 
+function resizeElement(element, handle, direction) {
+    let startX = 0;
+    let startY = 0;
+    let startLeft = 0;
+    let startTop = 0;
+    let startWidth = 0;
+    let startHeight = 0;
+    let pendingX = 0;
+    let pendingY = 0;
+    let frameScheduled = false;
+
+    const MIN_WIDTH = 280;
+    const MIN_HEIGHT = 180;
+
+    handle.addEventListener('mousedown', startResize);
+
+    function startResize(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Mirror dragElement's snapshot at the start so we don't force a
+        // layout reflow on every mousemove.
+        startX = event.clientX;
+        startY = event.clientY;
+        startLeft = element.offsetLeft;
+        startTop = element.offsetTop;
+        startWidth = element.offsetWidth;
+        startHeight = element.offsetHeight;
+        pendingX = 0;
+        pendingY = 0;
+
+        document.addEventListener('mouseup', stopResize);
+        document.addEventListener('mousemove', resizeMouse);
+        element.classList.add('is-resizing');
+        bringWindowToFront(element);
+    }
+
+    function resizeMouse(event) {
+        event.preventDefault();
+
+        // Always measure total delta from the start of the resize so the
+        // edge stays locked exactly to the cursor, same drift-free guarantee
+        // as dragElement.
+        pendingX = event.clientX - startX;
+        pendingY = event.clientY - startY;
+
+        if (!frameScheduled) {
+            frameScheduled = true;
+            requestFrame(() => {
+                const isLeft = direction === 'nw' || direction === 'sw';
+                const isTop = direction === 'nw' || direction === 'ne';
+
+                let newLeft = startLeft;
+                let newTop = startTop;
+                let newWidth = startWidth;
+                let newHeight = startHeight;
+
+                if (isLeft) {
+                    newLeft = startLeft + pendingX;
+                    newWidth = startWidth - pendingX;
+                } else {
+                    newWidth = startWidth + pendingX;
+                }
+                if (isTop) {
+                    newTop = startTop + pendingY;
+                    newHeight = startHeight - pendingY;
+                } else {
+                    newHeight = startHeight + pendingY;
+                }
+
+                // Snap to minimums while keeping the opposite edge pinned —
+                // back-compute the moving edge so the resize feels solid,
+                // not rubbery, at the minimum boundary.
+                if (newWidth < MIN_WIDTH) {
+                    if (isLeft) {
+                        newLeft = startLeft + startWidth - MIN_WIDTH;
+                    }
+                    newWidth = MIN_WIDTH;
+                }
+                if (newHeight < MIN_HEIGHT) {
+                    if (isTop) {
+                        newTop = startTop + startHeight - MIN_HEIGHT;
+                    }
+                    newHeight = MIN_HEIGHT;
+                }
+
+                element.style.left = `${newLeft}px`;
+                element.style.top = `${newTop}px`;
+                element.style.width = `${newWidth}px`;
+                element.style.height = `${newHeight}px`;
+
+                frameScheduled = false;
+            });
+        }
+    }
+
+    function stopResize() {
+        document.removeEventListener('mouseup', stopResize);
+        document.removeEventListener('mousemove', resizeMouse);
+        element.classList.remove('is-resizing');
+    }
+}
+
+function launchAppWindow(url, title, appId) {
+    if (!url) return;
+
+    const safeId = (appId || url).replace(/[^a-z0-9-]/gi, '-');
+    const existing = document.getElementById(`window-${safeId}`);
+    if (existing) {
+        bringWindowToFront(existing);
+        return;
+    }
+
+    const win = document.createElement('div');
+    win.className = 'window desktop-app';
+    win.id = `window-${safeId}`;
+
+    // Cascade new windows so they don't stack exactly on top of each other.
+    // Count only OPEN windows so closed ones don't permanently eat the offset.
+    const openWindows = document.querySelectorAll('.desktop-app[data-open="true"]').length;
+    const step = Math.min(openWindows, 6) * 30;
+    const winWidth = Math.min(900, window.innerWidth * 0.92);
+    const winHeight = Math.min(640, window.innerHeight * 0.85);
+    const startLeft = Math.max(20, Math.round((window.innerWidth - winWidth) / 2 + step));
+    const startTop = Math.min(
+        Math.max(20, 80 + step),
+        Math.max(20, window.innerHeight - winHeight - 20),
+    );
+    win.style.left = `${startLeft}px`;
+    win.style.top = `${startTop}px`;
+
+    win.innerHTML = `
+        <div class="window-header" id="header-${safeId}">
+            <button class="win-back" type="button" aria-label="Back">←</button>
+            <span class="window-title">${title}</span>
+            <button class="win-close" type="button" aria-label="Close">×</button>
+        </div>
+        <div class="window-body">
+            <iframe src="${url}" title="${title}" loading="lazy"></iframe>
+        </div>
+    `;
+
+    document.body.appendChild(win);
+
+    const header = win.querySelector('.window-header');
+    const closeButton = win.querySelector('.win-close');
+    const backButton = header.querySelector('.win-back');
+    const iframe = win.querySelector('iframe');
+
+    // Corner resize handles, one per corner. The handle's mousedown calls
+    // stopPropagation, so even though they live inside the window, they
+    // never bubble up into the header's drag listener.
+    const cornerDirections = ['nw', 'ne', 'sw', 'se'];
+    cornerDirections.forEach((direction) => {
+        const handle = document.createElement('div');
+        handle.className = `resize-handle resize-${direction}`;
+        win.appendChild(handle);
+        resizeElement(win, handle, direction);
+    });
+
+    dragElement(win, header);
+    openWindow(win);
+
+    // Dynamic .window elements weren't around when initializeWindowControls
+    // attached its per-window bring-to-front listener, so wire it up here.
+    win.addEventListener('mousedown', () => {
+        bringWindowToFront(win);
+    });
+
+    // Stop mousedown on the header buttons bubbling to the header's drag
+    // listener — otherwise clicking ×/← briefly starts dragging the window.
+    closeButton.addEventListener('mousedown', (event) => {
+        event.stopPropagation();
+    });
+    backButton.addEventListener('mousedown', (event) => {
+        event.stopPropagation();
+    });
+
+    // Hide any "Back to BrOS" button inside the app so users can't
+    // accidentally reload bros.html *inside* the iframe.
+    const hideInternalBackButton = () => {
+        try {
+            const backBtn = iframe.contentDocument.querySelector('.back-button');
+            if (backBtn) backBtn.style.display = 'none';
+        } catch (error) {
+            // file:// protocol (or cross-origin iframe) — harmless.
+        }
+    };
+    iframe.addEventListener('load', hideInternalBackButton);
+
+    closeButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        closeWindow(win);
+    });
+
+    backButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        try {
+            iframe.contentWindow.history.back();
+        } catch (error) {
+            // Empty history or cross-origin — just ignore.
+        }
+    });
+}
+
+function initializeAppLaunchers() {
+    // Note: preventDefault is omitted because the button elements we attach to
+    // don't navigate — calling it would be dead code that confuses readers.
+    document.querySelectorAll('[data-app-url]').forEach((element) => {
+        element.addEventListener('click', () => {
+            const url = element.dataset.appUrl;
+            const title = element.dataset.appTitle || element.textContent.trim() || 'App';
+            const id = element.dataset.appId || url;
+            launchAppWindow(url, title, id);
+        });
+    });
+}
+
 function bindAppIconToggle() {
     const appIcon = document.querySelector('.SelectedIcon');
     const journalWindow = document.getElementById('journal-window');
@@ -275,6 +501,8 @@ function initializePage() {
     initializeWindowControls();
     initializeJournalPages();
     bindAppIconToggle();
+    initializeAppLaunchers();
+    updateCurrentDate();
 
     const clockElement = document.querySelector('.clock');
     if (clockElement) {

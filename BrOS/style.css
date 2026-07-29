@@ -1,0 +1,308 @@
+h1 {
+  text-align: center;
+  position: relative;
+  top: 250px;
+  left: 675px;
+  color: white;
+  font-family: Cinzel;
+  animation: fadeIn 0.7s;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid white;
+  width: 0;
+  animation:
+    typing 1.5s steps(4) forwards,
+    blink 0.7s step-end infinite;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 18px;
+  animation: slideUp 0.6s ease-out;
+}
+button {
+  width: 100px;
+  height: 60px;
+  border-radius: 12px;
+  font-family: Geist Pixel;
+  color: black;
+  background-color: darkgray;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+body {
+  background-color: black;
+  background-image: url(assets/dap-dap-up.gif);
+  animation: bgPulse 8s ease-in-out infinite;
+}
+.hesap1 {
+  animation: fadeIn 0.5s;
+}
+.notlar {
+  animation: fadeIn 2s;
+}
+.terminal {
+  animation: fadeIn 3s;
+}
+.ai {
+  animation: fadeIn 4s;
+}
+.gym {
+  animation: fadeIn 5s;
+}
+.clickgame {
+  animation: fadeIn 6s;
+}
+.muzik {
+  animation: fadeIn 7s;
+}
+.haber {
+  animation: fadeIn 8s;
+}
+img {
+  position: absolute;
+  width: 200px;
+  left: 20px;
+  top: 200px;
+  opacity: 0.7;
+}
+button:hover {
+  color: white;
+  background-color: rgba(87, 76, 76, 0.3);
+  transform: translateX(-3px) scale(1.2);
+  box-shadow: 0 6px 14px rgba(255, 255, 255, 0.2);
+}
+.date {
+  position: relative;
+  left: 1300px;
+  top: 270px;
+  background-color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  width: 200px;
+  color: white;
+  font-size: 20px;
+  font-family: Geist Pixel;
+  animation: bounceIn 0.8s ease;
+}
+.clock {
+  width: 150px;
+  height: 150px;
+  border: 10px solid #333;
+  border-radius: 50%;
+  position: relative;
+  top: 220px;
+  background: #f9f9f9;
+  left: 1325px;
+  cursor: grab;
+  user-select: none;
+}
+.clock.is-dragging {
+  cursor: grabbing;
+}
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  border-radius: 50px;
+}
+.hour { width: 6px; height: 30px; background: #000; }
+.minute { width: 4px; height: 50px; background: #555; }
+.second { width: 2px; height: 70px; background: #f00; }
+#TimeElement {
+  position: fixed;
+  bottom: 0;
+  right: 60px;
+  top: 550px;
+  height: 30px;
+  font-size: 20px;
+  color: #fff;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 100px;
+  text-align: center;
+  font-family: Geist Pixel;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes typing {
+  to {
+    width: 4ch;
+  }
+}
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes bgPulse {
+  0%,
+  100% {
+    background-color: #000;
+  }
+  50% {
+    background-color: #0a0a12;
+  }
+}
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* ========== Draggable App Windows ========== */
+.desktop-app {
+  display: none;
+  position: absolute;
+  width: min(900px, 92vw);
+  height: min(640px, 85vh);
+  background: #11101a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.desktop-app.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.desktop-app.is-closing {
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+}
+.desktop-app.is-active {
+  border-color: rgba(255, 163, 26, 0.55);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.6),
+    0 0 0 2px rgba(255, 163, 26, 0.35);
+}
+/* Critical: while dragging, ignore pointer events on the iframe so the
+   browser doesn't let the iframe swallow mousemove and freeze the drag.
+   Same protection applies while resizing. */
+.desktop-app.is-dragging iframe,
+.desktop-app.is-resizing iframe {
+  pointer-events: none;
+}
+
+.window-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  height: 40px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.08);
+  font-family: Geist Pixel;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  cursor: grab;
+  user-select: none;
+}
+.window-header:active {
+  cursor: grabbing;
+}
+.window-title {
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.window-body {
+  height: calc(100% - 40px);
+  position: relative;
+}
+.window-body iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: transparent;
+}
+
+.win-close,
+.win-back {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.win-close:hover {
+  background: rgba(255, 80, 80, 0.55);
+  transform: scale(1.08);
+}
+.win-back:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* ========== Corner Resize Handles ========== */
+.resize-handle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: transparent;
+  z-index: 2;       /* below .window-header (3) so close/back stay clickable */
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.resize-handle:hover {
+  background: rgba(255, 163, 26, 0.45);
+  border-radius: 3px;
+  box-shadow: 0 0 6px rgba(255, 163, 26, 0.4);
+}
+.resize-handle.resize-nw { top: 0; left: 0; cursor: nw-resize; }
+.resize-handle.resize-ne { top: 0; right: 0; cursor: ne-resize; }
+.resize-handle.resize-sw { bottom: 0; left: 0; cursor: sw-resize; }
+.resize-handle.resize-se { bottom: 0; right: 0; cursor: se-resize; }
+
+/* Lift the header above the resize handles so the close/back buttons
+   remain hit-testable in the small areas where the corner handle and
+   the header overlap. */
+.window-header {
+  z-index: 3;
+}
