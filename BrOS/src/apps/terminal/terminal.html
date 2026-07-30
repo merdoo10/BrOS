@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Germania+One&family=Quicksand:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../apps.css" />
+    <style>
+      .terminal-card {
+        max-width: 900px;
+        width: 100%;
+      }
+      .terminal-window {
+        background: #09070f;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        padding: 24px;
+        min-height: 420px;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        gap: 18px;
+      }
+      .terminal-screen {
+        background: rgba(0, 0, 0, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 18px;
+        color: #d8d6f2;
+        font-family: 'Geist Pixel', monospace;
+        min-height: 320px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
+      .terminal-screen .terminal-line {
+        margin: 0 0 10px;
+      }
+      .terminal-screen .terminal-input-line {
+        color: #ffd368;
+      }
+      .terminal-form {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .terminal-prompt {
+        color: #8ac6ff;
+        font-family: 'Geist Pixel', monospace;
+        font-size: 18px;
+      }
+      .terminal-input {
+        flex: 1;
+        min-width: 0;
+        padding: 12px 16px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        font-family: 'Geist Pixel', monospace;
+        font-size: 16px;
+      }
+      .terminal-input:focus {
+        outline: none;
+        border-color: rgba(255, 163, 26, 0.8);
+        box-shadow: 0 0 0 3px rgba(255, 163, 26, 0.12);
+      }
+      .terminal-legend {
+        color: #c7c3ee;
+        font-size: 14px;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-fx" aria-hidden="true">
+      <div class="bg-blob blob-1"></div>
+      <div class="bg-blob blob-2"></div>
+      <div class="bg-blob blob-3"></div>
+      <div class="bg-blob blob-4"></div>
+      <div class="bg-grid"></div>
+    </div>
+    <a href="../../../bros.html" class="back-button">BrOS</a>
+    <div class="placeholder-shell">
+      <article class="placeholder-card terminal-card">
+        <h1>Terminal</h1>
+        <p class="placeholder-description">
+          BrOS terminali şimdi gerçek bir komut satırı arabirimiyle çalışıyor.
+          Komutları yazın, geçmişi gezin ve terminali temizleyin.
+        </p>
+        <div class="terminal-window">
+          <div id="terminal-screen" class="terminal-screen" aria-live="polite"></div>
+          <form id="terminal-form" class="terminal-form">
+            <span class="terminal-prompt">$</span>
+            <input
+              id="terminal-input"
+              class="terminal-input"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Komut yazın..."
+              aria-label="Terminal komut girişi"
+            />
+          </form>
+          <p class="terminal-legend">Yardım için <strong>help</strong> yazın.</p>
+        </div>
+      </article>
+    </div>
+    <script>
+      const screen = document.getElementById('terminal-screen');
+      const form = document.getElementById('terminal-form');
+      const input = document.getElementById('terminal-input');
+      const history = [];
+      let historyIndex = -1;
+
+      const COMMANDS = {
+        help: () => `Available commands:\nhelp     - Show this message\nabout    - About BrOS\nskills   - Our skills\nprojects - My projects\ncontact  - Contact info\nneofetch - System info\nclear    - Clear terminal\ndate     - Current date/time\nfortune  - Random fortune\ncowsay   - Cow says your text\nweather  - Fake weather report`,
+        about: () => `BrOS Terminal\nA lightweight browser-based terminal for the BrOS environment.`,
+        skills: () => `Skills: HTML, CSS, JavaScript, web apps, static UI`,
+        projects: () => `BrOS     - Browser OS demo\nClick    - Idle clicker game\nMuzik    - Spotify-compatible music UI\nNotlar   - Notes app`,
+        contact: () => `Email: support@bros.local\nGitHub: github.com/merdoo10`,
+        neofetch: () => `BrOS 0.1.0\nTerminal: Web CLI\nBrowser: ${navigator.userAgent}`,
+        date: () => new Date().toString(),
+        fortune: () => {
+          const fortunes = [
+            'Bugün harika bir gün olacak!',
+            'Kodunu yaz, sonra kahveni al.',
+            'Bir hata bulmak, iyileşmektir.',
+            'Her Click tıklamada daha da güçleniyorsun.',
+            'Müzik ve kod, birlikte daha iyi çalışır.',
+          ];
+          return fortunes[Math.floor(Math.random() * fortunes.length)];
+        },
+        weather: () => {
+          const conditions = ['☀️ Sunny', '🌧 Rainy', '🌙 Clear', '⛅ Cloudy', '🌈 Rainbow'];
+          const temp = Math.floor(Math.random() * 16 + 10);
+          return `${conditions[Math.floor(Math.random() * conditions.length)]} | ${temp}°C`;
+        },
+        cowsay: (text = 'BrOS is cute!') => {
+          const top = ' ' + '_'.repeat(text.length + 2);
+          const mid = `< ${text} >`;
+          const bot = ' ' + '-'.repeat(text.length + 2);
+          return `${top}\n${mid}\n${bot}\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||`;
+        },
+      };
+
+      function addLine(text, type = 'output') {
+        const line = document.createElement('div');
+        line.className = 'terminal-line terminal-' + type;
+        line.textContent = text;
+        screen.appendChild(line);
+        screen.scrollTop = screen.scrollHeight;
+      }
+
+      function runCommand(raw) {
+        const command = raw.trim();
+        if (!command) return;
+        addLine('$ ' + command, 'input-line');
+        history.unshift(command);
+        historyIndex = -1;
+
+        if (command === 'clear') {
+          screen.innerHTML = '';
+          return;
+        }
+
+        const [name, ...args] = command.split(' ');
+        if (name === 'echo') {
+          addLine(args.join(' '));
+          return;
+        }
+        if (COMMANDS[name]) {
+          addLine(COMMANDS[name](args.join(' ')));
+          return;
+        }
+        addLine(`Komut bulunamadı: ${name}`, 'error');
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        runCommand(input.value);
+        input.value = '';
+      });
+
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowUp' && history.length) {
+          event.preventDefault();
+          historyIndex = Math.min(historyIndex + 1, history.length - 1);
+          input.value = history[historyIndex] || '';
+        }
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          historyIndex = Math.max(historyIndex - 1, -1);
+          input.value = historyIndex >= 0 ? history[historyIndex] : '';
+        }
+      });
+
+      window.addEventListener('load', () => {
+        addLine('Welcome to BrOS Terminal!');
+        addLine('Type help to list commands.');
+        input.focus();
+      });
+    </script>
+  </body>
+</html>

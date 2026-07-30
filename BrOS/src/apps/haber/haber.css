@@ -1,0 +1,190 @@
+body{
+    margin: 0;
+    min-height: 100vh;
+}
+.balcony-bg{
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+    pointer-events: none;
+}
+.balcony-bg svg{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.balcony-bg::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.55);
+    z-index: -1;
+}
+h1{
+    text-align: center;
+    position: relative;
+    top: 25px;
+    color: white;
+    font-family: Lilita One;
+}
+.baslangic{
+text-align: center;
+position: relative;
+top: 30px;
+font-size: 22px;
+background-color:rgba(255, 255, 255, 0.55);
+width: 500px;
+left: 22%;
+font-family: Griffy;
+border-radius: 10px;
+}
+.kategori{
+text-align: center;
+position: relative;
+top: 200px;
+font-size: 25px;
+color: aliceblue;
+font-family: Geist Pixel;
+}
+.container{
+display: flex;
+flex-direction: row;
+justify-content: space-around;
+position: relative;
+top: 300px;
+}
+.bir,.iki,.uc,.dort,.bes,.alti,.yedi,.sekiz{
+border-radius: 12px;
+width: 100px;
+height: 35px;
+background-color:rgba(138, 48, 84, 0.55) ;
+opacity: 1;
+color: white;
+font-family: Geist Pixel;
+
+}
+button:hover{
+background-color: rgb(170, 60, 60);
+color: rgb(244, 230, 230);
+
+
+}
+ .cloud { animation: cloudDrift 20s ease-in-out infinite alternate; }
+    @keyframes cloudDrift { from { transform: translateX(0); } to { transform: translateX(45px); } }
+
+    .bird { animation: birdFly 16s linear infinite; opacity: 0; }
+    .bird.b2 { animation-delay: 6s; }
+    @keyframes birdFly {
+      0%   { transform: translate(-40px, 20px); opacity: 0; }
+      8%   { opacity: 0.9; }
+      45%  { transform: translate(430px, -20px); opacity: 0.9; }
+      88%  { opacity: 0.9; }
+      100% { transform: translate(950px, -55px); opacity: 0; }
+    }
+
+    .leaf { transform-box: fill-box; transform-origin: bottom center; animation: leafSway 4s ease-in-out infinite; }
+    .leaf2 { animation-duration: 4.6s; animation-delay: .3s; }
+    .leaf3 { animation-duration: 3.7s; animation-delay: .6s; }
+    .leaf4 { animation-duration: 4.2s; animation-delay: .15s; }
+    .leaf5 { animation-duration: 5s;   animation-delay: .5s; }
+    @keyframes leafSway { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+
+    .paper-left { transform-origin: 472px 402px; animation: paperFlutterL 4.5s ease-in-out infinite; }
+    .paper-right { transform-origin: 650px 402px; animation: paperFlutterR 5.2s ease-in-out infinite; }
+    @keyframes paperFlutterL { 0%,100% { transform: rotate(-1deg); } 50% { transform: rotate(3.5deg); } }
+    @keyframes paperFlutterR { 0%,100% { transform: rotate(1deg); } 50% { transform: rotate(-3.5deg); } }
+
+    .head { transform-box: fill-box; transform-origin: bottom center; animation: headSway 6s ease-in-out infinite; }
+    @keyframes headSway { 0%,100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+
+    .steam { transform-box: fill-box; transform-origin: bottom center; opacity: 0; animation: steamRise 3s ease-in infinite; }
+    .steam2 { animation-delay: 1s; }
+    .steam3 { animation-delay: 2s; }
+    @keyframes steamRise {
+      0%   { transform: translateY(0) scaleY(1); opacity: 0; }
+      20%  { opacity: 0.5; }
+      100% { transform: translateY(-45px) scaleY(1.4); opacity: 0; }
+    }
+    .container2{
+        display: flex;
+        flex-direction: column;
+        
+    }
+    .haber1,.haber2,.haber3{
+background-color: rgba(255, 255, 255, 0.55);
+width: 550px;
+position: relative;
+left: 10px;
+font-size: 20px;
+border-radius: 10px;
+font-family: Geist Pixel;
+    }
+.haber1b,.haber2b,.haber3b{
+    position: relative;
+    left: 10px;
+color: white;
+font-family: 'Courier New', Courier, monospace;
+}
+.sonraki{
+left: 90%;
+position: relative;
+width: 100px;
+font-size: 20px;
+top: 50px;
+font-family: Geist Pixel;
+}
+.onceki{
+left: 70%;
+position: relative;
+width: 100px;
+font-size: 20px;
+top: 50px;
+font-family: Geist Pixel;
+color: white;
+background-color: rgb(170, 60, 60);
+
+}
+.onceki:hover{
+    background-color: white;
+    color: black;
+}
+.home{
+width: 100px;
+font-size: 20px;
+font-family: Geist Pixel;
+height: 50px;
+top: 37px;
+position: relative;
+left:-10%;
+}
+.home1{
+    width: 100px;
+    font-size: 20px;
+    font-family: Geist Pixel;
+    height: 50px;
+    position: relative;
+    top: 37px;
+    left: -3%;
+}
+.uyari{
+    text-align: center;
+position: relative;
+top: 400px;
+font-size: 18px;
+color: rgb(234, 219, 219);
+font-style: italic;
+background-color: rgba(78, 68, 68, 0.55);
+width: 500px;
+left: 200px;
+border-radius: 20px;
+}
+.home2{
+width: 100px;
+font-size: 20px;
+font-family: Geist Pixel;
+height: 50px;
+position: relative;
+top: 37px;
+left: -3%;
+}

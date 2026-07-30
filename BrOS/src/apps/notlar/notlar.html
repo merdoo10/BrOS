@@ -11,6 +11,97 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../apps.css" />
+    <style>
+      .notes-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        max-width: 980px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .notes-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .notes-header h1 {
+        margin: 0;
+        font-size: 42px;
+        color: #fff;
+        font-family: Germania One;
+      }
+      .notes-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+      .notes-actions input,
+      .notes-actions button {
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        font-family: Geist Pixel;
+        font-size: 14px;
+      }
+      .notes-actions input {
+        flex: 1;
+        min-width: 220px;
+      }
+      .notes-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+      .note-card {
+        background: rgba(15, 12, 26, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px;
+        padding: 20px;
+        display: grid;
+        gap: 12px;
+      }
+      .note-card input,
+      .note-card textarea {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        color: #f5f3ff;
+        font-family: Geist Pixel;
+        font-size: 14px;
+        padding: 12px 14px;
+        resize: vertical;
+      }
+      .note-card textarea {
+        min-height: 140px;
+      }
+      .note-card footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .note-card button {
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 12px;
+        cursor: pointer;
+      }
+      .notes-empty {
+        color: #d1cbe8;
+        font-size: 18px;
+        text-align: center;
+        margin-top: 80px;
+      }
+    </style>
   </head>
   <body>
     <div class="bg-fx" aria-hidden="true">
@@ -21,24 +112,100 @@
       <div class="bg-grid"></div>
     </div>
     <a href="../../../bros.html" class="back-button">BrOS</a>
-
-    <div class="placeholder-shell">
-      <article class="placeholder-card">
-        <div class="placeholder-icon">📝</div>
-        <p class="placeholder-subtitle">Hızlı notlar & defter</p>
-        <h1>Notlar</h1>
-        <p class="placeholder-description">
-          Sürüklenebilir pencerelerle organize edilen, otomatik kaydedilen
-          kişisel defteriniz. Tarayıcı kapansa bile notlarınız durur.
-        </p>
-        <span class="placeholder-status">Yapım aşamasında</span>
-        <ul class="placeholder-features">
-          <li>Birden çok sayfa + otomatik kayıt</li>
-          <li>Sürüklenebilir &amp; yeniden boyutlandırılabilir pencereler</li>
-          <li>Markdown desteği</li>
-          <li>Arama ve etiketleme</li>
-        </ul>
-      </article>
+    <div class="placeholder-shell notes-shell">
+      <div class="notes-header">
+        <div>
+          <p class="placeholder-subtitle">Notlar uygulamanız</p>
+          <h1>Notes</h1>
+          <p class="placeholder-description">
+            Hemen not al, değişiklikleri otomatik kaydet ve notlarını ara.
+          </p>
+        </div>
+        <button id="new-note-btn">Yeni Not</button>
+      </div>
+      <div class="notes-actions">
+        <input id="search-input" type="search" placeholder="Notları ara..." aria-label="Notları ara" />
+      </div>
+      <div id="notes-list" class="notes-list"></div>
+      <p id="notes-empty" class="notes-empty" hidden>Henüz not yok. Yeni bir not ekleyin.</p>
     </div>
+    <script>
+      const STORAGE_KEY = 'bros-notes';
+      const notesList = document.getElementById('notes-list');
+      const newNoteBtn = document.getElementById('new-note-btn');
+      const searchInput = document.getElementById('search-input');
+      const notesEmpty = document.getElementById('notes-empty');
+
+      let notes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+      function saveNotes() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      }
+
+      function createNote() {
+        notes.unshift({
+          id: Date.now().toString(),
+          title: 'Yeni Not',
+          content: '',
+          updated: new Date().toISOString(),
+        });
+        saveNotes();
+        renderNotes();
+      }
+
+      function deleteNote(id) {
+        notes = notes.filter((note) => note.id !== id);
+        saveNotes();
+        renderNotes();
+      }
+
+      function updateNote(id, key, value) {
+        notes = notes.map((note) => note.id === id ? { ...note, [key]: value, updated: new Date().toISOString() } : note);
+        saveNotes();
+      }
+
+      function renderNotes() {
+        const query = searchInput.value.trim().toLowerCase();
+        const filtered = notes.filter((note) => note.title.toLowerCase().includes(query) || note.content.toLowerCase().includes(query));
+        notesList.innerHTML = '';
+
+        if (!filtered.length) {
+          notesEmpty.hidden = false;
+          return;
+        }
+        notesEmpty.hidden = true;
+
+        filtered.forEach((note) => {
+          const card = document.createElement('article');
+          card.className = 'note-card';
+          card.innerHTML = `
+            <input type="text" value="${note.title}" aria-label="Not başlığı" />
+            <textarea aria-label="Not içeriği">${note.content}</textarea>
+            <footer>
+              <small>${new Date(note.updated).toLocaleString()}</small>
+              <button type="button" class="delete-note">Sil</button>
+            </footer>
+          `;
+
+          const titleInput = card.querySelector('input');
+          const contentTextarea = card.querySelector('textarea');
+          const deleteButton = card.querySelector('.delete-note');
+
+          titleInput.addEventListener('input', () => {
+            updateNote(note.id, 'title', titleInput.value);
+          });
+          contentTextarea.addEventListener('input', () => {
+            updateNote(note.id, 'content', contentTextarea.value);
+          });
+          deleteButton.addEventListener('click', () => deleteNote(note.id));
+
+          notesList.appendChild(card);
+        });
+      }
+
+      newNoteBtn.addEventListener('click', createNote);
+      searchInput.addEventListener('input', renderNotes);
+      window.addEventListener('load', renderNotes);
+    </script>
   </body>
 </html>

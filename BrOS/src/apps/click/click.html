@@ -11,6 +11,92 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../apps.css" />
+    <style>
+      .click-shell {
+        max-width: 900px;
+        margin: 0 auto;
+        width: 100%;
+        display: grid;
+        gap: 24px;
+      }
+      .click-card {
+        background: rgba(15, 12, 26, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 28px;
+        display: grid;
+        gap: 20px;
+      }
+      .click-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+      .click-header h1 {
+        margin: 0;
+        font-size: 42px;
+      }
+      .click-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 14px;
+      }
+      .stat-card {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: grid;
+        gap: 8px;
+      }
+      .stat-card strong {
+        font-size: 28px;
+        color: #fff;
+      }
+      .click-action {
+        display: flex;
+        justify-content: center;
+      }
+      .click-button {
+        border: none;
+        width: min(260px, 100%);
+        padding: 24px 28px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, #ffb347, #ffcc33);
+        color: #111;
+        font-size: 22px;
+        font-family: Geist Pixel;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .click-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 34px rgba(255, 204, 51, 0.32);
+      }
+      .upgrades {
+        display: grid;
+        gap: 14px;
+      }
+      .upgrade-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .upgrade-item button {
+        padding: 10px 14px;
+        border-radius: 16px;
+        border: none;
+        background: #ffb347;
+        color: #111;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <div class="bg-fx" aria-hidden="true">
@@ -21,24 +107,130 @@
       <div class="bg-grid"></div>
     </div>
     <a href="../../../bros.html" class="back-button">BrOS</a>
-
-    <div class="placeholder-shell">
-      <article class="placeholder-card">
-        <div class="placeholder-icon">🖱️</div>
-        <p class="placeholder-subtitle">Tıkla-&amp;-kazan idle oyun</p>
-        <h1>Click</h1>
-        <p class="placeholder-description">
-          Tıklamayla coin kasıp yükseltmeler satın aldığınız, hızlanan bir
-          idle oyun. BrOS'tan ayrılmadan kısa mola.
-        </p>
-        <span class="placeholder-status">Yapım aşamasında</span>
-        <ul class="placeholder-features">
-          <li>Otomatik kazanç sistemi (idle)</li>
-          <li>Yükseltme ağacı</li>
-          <li>Skor &amp; seri istatistikleri</li>
-          <li>Başarım rozetleri</li>
-        </ul>
+    <div class="placeholder-shell click-shell">
+      <article class="click-card">
+        <div class="click-header">
+          <div>
+            <p class="placeholder-subtitle">Clicker oyunu</p>
+            <h1>Click</h1>
+          </div>
+          <button id="reset-button" type="button">Sıfırla</button>
+        </div>
+        <div class="click-stats">
+          <div class="stat-card">
+            <small>Coins</small>
+            <strong id="coins-count">0</strong>
+          </div>
+          <div class="stat-card">
+            <small>Coins / tık</small>
+            <strong id="click-power">1</strong>
+          </div>
+          <div class="stat-card">
+            <small>Otomatik / sn</small>
+            <strong id="idle-rate">0</strong>
+          </div>
+        </div>
+        <div class="click-action">
+          <button id="click-button" class="click-button" type="button">Tıkla!</button>
+        </div>
+        <div class="upgrades">
+          <div class="upgrade-item">
+            <div>
+              <strong>Auto Clicker</strong>
+              <p>Her saniye +1 coins</p>
+            </div>
+            <button id="buy-auto">Satın al (20)</button>
+          </div>
+          <div class="upgrade-item">
+            <div>
+              <strong>Power Boost</strong>
+              <p>Her tık +1 güç</p>
+            </div>
+            <button id="buy-power">Satın al (50)</button>
+          </div>
+        </div>
       </article>
     </div>
+    <script>
+      const coinsCount = document.getElementById('coins-count');
+      const clickPower = document.getElementById('click-power');
+      const idleRate = document.getElementById('idle-rate');
+      const clickButton = document.getElementById('click-button');
+      const buyAuto = document.getElementById('buy-auto');
+      const buyPower = document.getElementById('buy-power');
+      const resetButton = document.getElementById('reset-button');
+
+      const STORAGE_KEY = 'bros-clicker-state';
+      const defaultState = {
+        coins: 0,
+        clickPower: 1,
+        autoClickers: 0,
+      };
+      let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || defaultState;
+
+      function saveState() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
+
+      function render() {
+        coinsCount.textContent = Math.floor(state.coins);
+        clickPower.textContent = state.clickPower;
+        idleRate.textContent = state.autoClickers;
+        buyAuto.textContent = `Satın al (${20 + state.autoClickers * 10})`;
+        buyPower.textContent = `Satın al (${50 + state.clickPower * 15})`;
+      }
+
+      function addCoins(amount) {
+        state.coins += amount;
+        saveState();
+        render();
+      }
+
+      clickButton.addEventListener('click', () => {
+        addCoins(state.clickPower);
+      });
+
+      buyAuto.addEventListener('click', () => {
+        const price = 20 + state.autoClickers * 10;
+        if (state.coins >= price) {
+          state.coins -= price;
+          state.autoClickers += 1;
+          saveState();
+          render();
+        } else {
+          alert('Yeterli coins yok.');
+        }
+      });
+
+      buyPower.addEventListener('click', () => {
+        const price = 50 + state.clickPower * 15;
+        if (state.coins >= price) {
+          state.coins -= price;
+          state.clickPower += 1;
+          saveState();
+          render();
+        } else {
+          alert('Yeterli coins yok.');
+        }
+      });
+
+      resetButton.addEventListener('click', () => {
+        if (confirm('Oyunu sıfırlamak istediğinizden emin misiniz?')) {
+          state = { ...defaultState };
+          saveState();
+          render();
+        }
+      });
+
+      setInterval(() => {
+        if (state.autoClickers > 0) {
+          state.coins += state.autoClickers;
+          saveState();
+          render();
+        }
+      }, 1000);
+
+      window.addEventListener('load', render);
+    </script>
   </body>
 </html>

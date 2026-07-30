@@ -141,9 +141,9 @@ function initializeWindowControls() {
     const statWindow = document.getElementById('stat');
     const statToggleButton = document.getElementById('window-toggle-btn');
     const statHeader = document.getElementById('statheader');
-    const journalWindow = document.getElementById('journal-window');
-    const journalToggleButton = document.getElementById('journal-toggle-btn');
-    const journalHeader = document.getElementById('journal-header');
+    const notesWindow = document.getElementById('journal-window');
+    const notesToggleButton = document.getElementById('journal-toggle-btn');
+    const notesHeader = document.getElementById('journal-header');
 
     if (statWindow && statToggleButton && statHeader) {
         statToggleButton.addEventListener('click', () => {
@@ -160,14 +160,14 @@ function initializeWindowControls() {
         dragElement(statWindow, statHeader);
     }
 
-    if (journalWindow && journalToggleButton && journalHeader) {
-        journalToggleButton.addEventListener('click', () => {
-            toggleWindowState(journalWindow);
-            journalToggleButton.textContent = journalWindow.dataset.open === 'true' ? '−' : '+';
-            journalToggleButton.setAttribute('aria-expanded', journalWindow.dataset.open === 'true' ? 'true' : 'false');
+    if (notesWindow && notesToggleButton && notesHeader) {
+        notesToggleButton.addEventListener('click', () => {
+            toggleWindowState(notesWindow);
+            notesToggleButton.textContent = notesWindow.dataset.open === 'true' ? '−' : '+';
+            notesToggleButton.setAttribute('aria-expanded', notesWindow.dataset.open === 'true' ? 'true' : 'false');
         });
 
-        dragElement(journalWindow, journalHeader);
+        dragElement(notesWindow, notesHeader);
     }
 
     document.querySelectorAll('.window').forEach((windowElement) => {
@@ -175,25 +175,25 @@ function initializeWindowControls() {
     });
 }
 
-function initializeJournalPages() {
-    const journalWindow = document.getElementById('journal-window');
+function initializeNotesPages() {
+    const notesWindow = document.getElementById('journal-window');
     const pagesContainer = document.querySelector('.journal-pages');
     const prevButton = document.getElementById('journal-prev');
     const nextButton = document.getElementById('journal-next');
     const newPageButton = document.getElementById('journal-new-page');
     const pageIndicator = document.getElementById('journal-page-indicator');
 
-    if (!journalWindow || !pagesContainer) return;
+    if (!notesWindow || !pagesContainer) return;
 
     let currentPage = 0;
     let pageCount = pagesContainer.querySelectorAll('.journal-page').length;
-    const savedEntries = JSON.parse(localStorage.getItem('journal-entries') || '{}');
+    const savedEntries = JSON.parse(localStorage.getItem('notes-entries') || '{}');
 
     function saveEntry(textarea) {
         const storageKey = textarea.dataset.storageKey;
         if (storageKey) {
             savedEntries[storageKey] = textarea.value;
-            localStorage.setItem('journal-entries', JSON.stringify(savedEntries));
+            localStorage.setItem('notes-entries', JSON.stringify(savedEntries));
         }
     }
 
@@ -229,8 +229,7 @@ function initializeJournalPages() {
         pageElement.innerHTML = `
             <h3>Page ${pageNumber}</h3>
             <p>Write a fresh note here.</p>
-            <!-- Add your own content here -->
-            <textarea class="journal-entry" data-storage-key="journal-page-${pageNumber}" placeholder="Write your new page here"></textarea>
+            <textarea class="journal-entry" data-storage-key="notes-page-${pageNumber}" placeholder="Write your new page here"></textarea>
         `;
 
         pagesContainer.appendChild(pageElement);
@@ -485,13 +484,13 @@ function initializeAppLaunchers() {
 
 function bindAppIconToggle() {
     const appIcon = document.querySelector('.SelectedIcon');
-    const journalWindow = document.getElementById('journal-window');
+    const notesWindow = document.getElementById('journal-window');
 
-    if (!appIcon || !journalWindow) return;
+    if (!appIcon || !notesWindow) return;
 
     appIcon.addEventListener('click', () => {
-        toggleWindowState(journalWindow);
-        appIcon.classList.toggle('is-selected', journalWindow.dataset.open === 'true');
+        toggleWindowState(notesWindow);
+        appIcon.classList.toggle('is-selected', notesWindow.dataset.open === 'true');
     });
 }
 
@@ -499,7 +498,7 @@ function initializePage() {
     const eyeSocket = document.querySelector('.eye-socket');
 
     initializeWindowControls();
-    initializeJournalPages();
+    initializeNotesPages();
     bindAppIconToggle();
     initializeAppLaunchers();
     updateCurrentDate();
