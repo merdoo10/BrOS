@@ -72,6 +72,24 @@ The launching mechanism ties the home screen UI together with the window manager
    - `appId` — an identifier for the app/window instance
 5. `launchAppWindow` then creates a new draggable/resizable window and loads the given URL inside an iframe within that window, sandboxing the app to that iframe as described above.
 
+## Quick start (serve locally)
+Serve the project root and open bros.html in your browser.
+
+- With Node (http-server):
+```
+npm install -g http-server
+http-server . -p 3000
+# then open http://localhost:3000/bros.html
+```
+
+- With Python:
+```
+python3 -m http.server 8000
+# then open http://localhost:8000/bros.html
+```
+
+Opening bros.html is enough — click app buttons to launch apps in windows.
+
 ## Developer Notes
 
 A few practical notes for anyone working on the codebase:
@@ -94,3 +112,5 @@ Some honest notes on pain points encountered during development, kept here for f
 ## License
 
 This repository includes a `LICENSE` file. Please refer to that file directly for the exact terms governing use, modification, and distribution of this project.
+
+
