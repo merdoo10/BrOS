@@ -1,312 +1,46 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HM</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Germania+One&family=Quicksand:wght@300..700&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="../apps.css" />
     <style>
-      .calculator-shell {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 32px 16px 40px;
-        box-sizing: border-box;
-      }
-      .calculator-card {
-        width: min(420px, 100%);
-        background: rgba(12, 12, 24, 0.86);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 36px;
-        padding: 24px;
-        box-shadow: 0 34px 80px rgba(0, 0, 0, 0.45);
-        backdrop-filter: blur(18px);
-      }
-      .calculator-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 18px;
-      }
-      .calculator-header h1 {
+      body {
         margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #140f1f, #2b1740);
+        color: #f7f2ff;
+        font-family: Arial, sans-serif;
+      }
+      .hm-page {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 32px 20px 48px;
+        display: grid;
+        gap: 18px;
+      }
+      .hm-card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 22px;
+        padding: 24px;
+      }
+      .hm-card h1 {
+        margin: 0 0 10px;
         font-size: 2rem;
       }
-      .calculator-display {
-        min-height: 110px;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 32px;
-        padding: 22px 18px;
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-        color: #ffffff;
-        font-family: 'Geist Pixel', monospace;
-        font-size: clamp(2.5rem, 6vw, 4rem);
-        line-height: 1;
-        text-align: right;
-        overflow-wrap: break-word;
-        word-break: break-all;
-      }
-      .calculator-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 24px;
-      }
-      .calc-btn {
-        border: none;
-        border-radius: 100%;
-        padding: 0;
-        aspect-ratio: 1 / 1;
-        min-height: 68px;
-        font-family: 'Geist Pixel', monospace;
-        font-size: 1.3rem;
-        cursor: pointer;
-        color: #fff;
-        background: rgba(255, 255, 255, 0.08);
-        transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
-      }
-      .calc-btn:hover,
-      .calc-btn:focus-visible {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.18);
-        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
-        outline: none;
-      }
-      .calc-btn.operator {
-        background: #ff9f1c;
-        color: #121212;
-      }
-      .calc-btn.control {
-        background: rgba(255, 255, 255, 0.16);
-        color: #ffffff;
-      }
-      .calc-btn.zero {
-        grid-column: span 2;
-        border-radius: 35px;
-      }
-      .back-button {
-        position: fixed;
-        top: 28px;
-        left: 28px;
-      }
-      @media (max-width: 480px) {
-        .calculator-card {
-          padding: 18px;
-        }
-        .calculator-grid {
-          gap: 10px;
-        }
-        .calc-btn {
-          min-height: 60px;
-          font-size: 1.1rem;
-        }
-        .calculator-display {
-          min-height: 90px;
-          font-size: 2.3rem;
-          padding: 18px 16px;
-        }
+      .hm-card p {
+        margin: 0;
+        line-height: 1.6;
       }
     </style>
   </head>
   <body>
-    <div class="bg-fx" aria-hidden="true">
-      <div class="bg-blob blob-1"></div>
-      <div class="bg-blob blob-2"></div>
-      <div class="bg-blob blob-3"></div>
-      <div class="bg-blob blob-4"></div>
-      <div class="bg-grid"></div>
+    <div class="hm-page">
+      <div class="hm-card">
+        <h1>Calc</h1>
+      </div>
     </div>
-    <a href="../../../bros.html" class="back-button">BrOS</a>
-
-    <div class="calculator-shell">
-      <article class="calculator-card">
-        <div class="calculator-header">
-          <p class="placeholder-subtitle">Hesap Makinesi</p>
-          <h1>HM</h1>
-        </div>
-        <div id="display" class="calculator-display">
-          <div id="expression">0</div>
-        </div>
-        <div class="calculator-grid">
-          <button class="calc-btn control" data-action="clear">C</button>
-          <button class="calc-btn control" data-action="toggle-sign">±</button>
-          <button class="calc-btn control" data-action="percent">%</button>
-          <button class="calc-btn operator" data-action="operator" data-value="/">÷</button>
-
-          <button class="calc-btn" data-action="number" data-value="7">7</button>
-          <button class="calc-btn" data-action="number" data-value="8">8</button>
-          <button class="calc-btn" data-action="number" data-value="9">9</button>
-          <button class="calc-btn operator" data-action="operator" data-value="*">×</button>
-
-          <button class="calc-btn" data-action="number" data-value="4">4</button>
-          <button class="calc-btn" data-action="number" data-value="5">5</button>
-          <button class="calc-btn" data-action="number" data-value="6">6</button>
-          <button class="calc-btn operator" data-action="operator" data-value="-">−</button>
-
-          <button class="calc-btn" data-action="number" data-value="1">1</button>
-          <button class="calc-btn" data-action="number" data-value="2">2</button>
-          <button class="calc-btn" data-action="number" data-value="3">3</button>
-          <button class="calc-btn operator" data-action="operator" data-value="+">+</button>
-
-          <button class="calc-btn zero" data-action="number" data-value="0">0</button>
-          <button class="calc-btn" data-action="number" data-value=".">.</button>
-          <button class="calc-btn operator" data-action="equals">=</button>
-        </div>
-      </article>
-    </div>
-    <script>
-      const displayEl = document.getElementById('expression');
-      const buttons = document.querySelectorAll('.calc-btn');
-
-      let currentValue = '0';
-      let previousValue = null;
-      let operator = null;
-      let shouldResetScreen = false;
-
-      function updateDisplay() {
-        displayEl.textContent = currentValue;
-      }
-
-      function resetScreen() {
-        currentValue = '0';
-        shouldResetScreen = false;
-      }
-
-      function appendNumber(number) {
-        if (shouldResetScreen || currentValue === 'Error') {
-          currentValue = number === '.' ? '0.' : number;
-          shouldResetScreen = false;
-          return;
-        }
-        if (number === '.' && currentValue.includes('.')) return;
-        if (currentValue === '0' && number !== '.') {
-          currentValue = number;
-          return;
-        }
-        currentValue += number;
-      }
-
-      function chooseOperator(nextOperator) {
-        if (operator !== null) {
-          calculate();
-        }
-        previousValue = currentValue;
-        operator = nextOperator;
-        shouldResetScreen = true;
-      }
-
-      function calculate() {
-        if (operator === null || previousValue === null) return;
-        const first = parseFloat(previousValue);
-        const second = parseFloat(currentValue);
-        let result = 0;
-
-        switch (operator) {
-          case '+':
-            result = first + second;
-            break;
-          case '-':
-            result = first - second;
-            break;
-          case '*':
-            result = first * second;
-            break;
-          case '/':
-            result = second === 0 ? 'Error' : first / second;
-            break;
-        }
-
-        currentValue = String(result);
-        operator = null;
-        previousValue = null;
-        shouldResetScreen = true;
-      }
-
-      function clearAll() {
-        currentValue = '0';
-        previousValue = null;
-        operator = null;
-        shouldResetScreen = false;
-      }
-
-      function deleteLast() {
-        if (currentValue === 'Error' || currentValue.length === 1) {
-          currentValue = '0';
-          return;
-        }
-        currentValue = currentValue.slice(0, -1);
-      }
-
-      function toggleSign() {
-        if (currentValue === '0' || currentValue === 'Error') return;
-        currentValue = currentValue.startsWith('-') ? currentValue.slice(1) : `-${currentValue}`;
-      }
-
-      function percent() {
-        const value = parseFloat(currentValue);
-        currentValue = String(value / 100);
-      }
-
-      buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-          const action = button.dataset.action;
-          const value = button.dataset.value;
-
-          switch (action) {
-            case 'number':
-              appendNumber(value);
-              break;
-            case 'operator':
-              chooseOperator(value);
-              break;
-            case 'equals':
-              calculate();
-              break;
-            case 'clear':
-              clearAll();
-              break;
-            case 'toggle-sign':
-              toggleSign();
-              break;
-            case 'percent':
-              percent();
-              break;
-          }
-
-          updateDisplay();
-        });
-      });
-
-      document.addEventListener('keydown', (event) => {
-        const { key } = event;
-        if (/^[0-9]$/.test(key)) {
-          appendNumber(key);
-        } else if (key === '.') {
-          appendNumber(key);
-        } else if (['+', '-', '*', '/'].includes(key)) {
-          chooseOperator(key);
-        } else if (key === 'Enter' || key === '=') {
-          event.preventDefault();
-          calculate();
-        } else if (key === 'Backspace') {
-          deleteLast();
-        } else if (key === 'Escape' || key.toLowerCase() === 'c') {
-          clearAll();
-        }
-        updateDisplay();
-      });
-
-      updateDisplay();
-    </script>
   </body>
 </html>

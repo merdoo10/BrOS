@@ -1,0 +1,63 @@
+      .terminal-card {
+        max-width: 900px;
+        width: 100%;
+      }
+      .terminal-window {
+        background: #09070f;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        padding: 24px;
+        min-height: 420px;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        gap: 18px;
+      }
+      .terminal-screen {
+        background: rgba(0, 0, 0, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 18px;
+        color: #d8d6f2;
+        font-family: 'Geist Pixel', monospace;
+        min-height: 320px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
+      .terminal-screen .terminal-line {
+        margin: 0 0 10px;
+      }
+      .terminal-screen .terminal-input-line {
+        color: #ffd368;
+      }
+      .terminal-form {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .terminal-prompt {
+        color: #8ac6ff;
+        font-family: 'Geist Pixel', monospace;
+        font-size: 18px;
+      }
+      .terminal-input {
+        flex: 1;
+        min-width: 0;
+        padding: 12px 16px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        font-family: 'Geist Pixel', monospace;
+        font-size: 16px;
+      }
+      .terminal-input:focus {
+        outline: none;
+        border-color: rgba(255, 163, 26, 0.8);
+        box-shadow: 0 0 0 3px rgba(255, 163, 26, 0.12);
+      }
+      .terminal-legend {
+        color: #c7c3ee;
+        font-size: 14px;
+        margin: 0;
+      }
+    

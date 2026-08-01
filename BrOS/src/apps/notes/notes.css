@@ -1,0 +1,91 @@
+
+      .notes-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        max-width: 980px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .notes-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .notes-header h1 {
+        margin: 0;
+        font-size: 42px;
+        color: #fff;
+        font-family: Germania One;
+      }
+      .notes-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+      .notes-actions input,
+      .notes-actions button {
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        font-family: Geist Pixel;
+        font-size: 14px;
+      }
+      .notes-actions input {
+        flex: 1;
+        min-width: 220px;
+      }
+      .notes-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+      .note-card {
+        background: rgba(15, 12, 26, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px;
+        padding: 20px;
+        display: grid;
+        gap: 12px;
+      }
+      .note-card input,
+      .note-card textarea {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        color: #f5f3ff;
+        font-family: Geist Pixel;
+        font-size: 14px;
+        padding: 12px 14px;
+        resize: vertical;
+      }
+      .note-card textarea {
+        min-height: 140px;
+      }
+      .note-card footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .note-card button {
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 12px;
+        cursor: pointer;
+      }
+      .notes-empty {
+        color: #d1cbe8;
+        font-size: 18px;
+        text-align: center;
+        margin-top: 80px;
+      }
+    

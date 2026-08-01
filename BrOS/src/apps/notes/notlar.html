@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Müzik</title>
+    <title>Notlar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,7 +11,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../apps.css" />
-    <link rel="stylesheet" href="../muzik/style.css" />
+    <link rel="stylesheet" href="../notes/notes.css" />
   </head>
   <body>
     <div class="bg-fx" aria-hidden="true">
@@ -22,22 +22,23 @@
       <div class="bg-grid"></div>
     </div>
     <a href="../../../bros.html" class="back-button">BrOS</a>
-    <div class="placeholder-shell music-shell">
-      <article class="music-card">
-        <div class="music-header">
-          <div>
-            <p class="placeholder-subtitle">Spotify bağlantısı</p>
-            <h1>Muzik</h1>
-          </div>
-          <button id="logout-btn" type="button">Çıkış Yap</button>
+    <div class="placeholder-shell notes-shell">
+      <div class="notes-header">
+        <div>
+          <p class="placeholder-subtitle">Notlar uygulamanız</p>
+          <h1>Notes</h1>
+          <p class="placeholder-description">
+            Hemen not al, değişiklikleri otomatik kaydet ve notlarını ara.
+          </p>
         </div>
-        <div class="music-connect">
-          <button id="connect-btn" type="button">Spotify'a Bağlan</button>
-          <p class="music-status" id="music-status">Spotify bağlantısı için butona tıklayın.</p>
-        </div>
-        <section class="track-list" id="track-list" aria-live="polite"></section>
-      </article>
+        <button id="new-note-btn">Yeni Not</button>
+      </div>
+      <div class="notes-actions">
+        <input id="search-input" type="search" placeholder="Notları ara..." aria-label="Notları ara" />
+      </div>
+      <div id="notes-list" class="notes-list"></div>
+      <p id="notes-empty" class="notes-empty" hidden>Henüz not yok. Yeni bir not ekleyin.</p>
     </div>
-    <script src="../muzik/script.js"></script>
+    <script src="../notes/notes.js"></script>
   </body>
 </html>

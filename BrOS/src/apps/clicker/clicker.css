@@ -1,0 +1,152 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #1a0f0b, #3b1f16);
+  color: #f7efe8;
+}
+
+.click-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 24px;
+}
+
+.click-card {
+  background: rgba(15, 12, 26, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  padding: 28px;
+  display: grid;
+  gap: 22px;
+}
+
+.click-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.click-header h1 {
+  margin: 0;
+  font-size: 42px;
+}
+
+.click-score {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.click-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.stat-card {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: grid;
+  gap: 8px;
+}
+
+.stat-card strong {
+  font-size: 28px;
+  color: #fff;
+}
+
+.cookie-stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 360px;
+  border-radius: 24px;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.1), rgba(0,0,0,0.08));
+  overflow: hidden;
+}
+
+.cookie-orbit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.cookie-orbit .orbiter {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5a2b, #d49a4d);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.18);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  transform-origin: center;
+}
+
+.cookie-button {
+  position: relative;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 120px;
+  padding: 0;
+  transition: transform 0.08s ease;
+  animation: spinClockwise 40s linear infinite;
+}
+
+.cookie-button:active {
+  transform: scale(0.92);
+}
+
+.cookie-button.is-pulse {
+  transform: scale(1.08);
+}
+
+@keyframes spinClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.upgrades {
+  display: grid;
+  gap: 14px;
+}
+
+.upgrade-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  align-items: center;
+}
+
+.upgrade-item button {
+  padding: 10px 14px;
+  border-radius: 16px;
+  border: none;
+  background: #ffb347;
+  color: #111;
+  cursor: pointer;
+  font-weight: 700;
+}
