@@ -1,63 +1,43 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HM</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Germania+One&family=Quicksand:wght@300..700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../apps.css" />
-    <link rel="stylesheet" href="../calc/calc.css" />
+    <title>Calc</title>
+    <link rel="stylesheet" href="calc.css" />
   </head>
   <body>
-    <div class="bg-fx" aria-hidden="true">
-      <div class="bg-blob blob-1"></div>
-      <div class="bg-blob blob-2"></div>
-      <div class="bg-blob blob-3"></div>
-      <div class="bg-blob blob-4"></div>
-      <div class="bg-grid"></div>
-    </div>
-    <a href="../../../bros.html" class="back-button">BrOS</a>
-
-    <div class="calculator-shell">
-      <article class="calculator-card">
-        <div class="calculator-header">
-          <p class="placeholder-subtitle">Hesap Makinesi</p>
-          <h1>HM</h1>
+    <section id="calc-window" class="window" data-open="true" aria-label="Calculator Window">
+      <div id="calc-header" class="window-header">
+        <span>Calc</span>
+        <button id="calc-toggle-btn" class="window-toggle-btn" type="button" aria-label="Toggle calculator">−</button>
+      </div>
+      <div class="window-body">
+        <input id="calc-display" class="calc-display" type="text" value="0" readonly />
+        <div class="calc-keys" role="grid" aria-label="Calculator keypad">
+          <button type="button" data-action="clear">C</button>
+          <button type="button" data-action="delete">⌫</button>
+          <button type="button" data-value="%">%</button>
+          <button type="button" data-value="/">÷</button>
+          <button type="button" data-value="7">7</button>
+          <button type="button" data-value="8">8</button>
+          <button type="button" data-value="9">9</button>
+          <button type="button" data-value="*">×</button>
+          <button type="button" data-value="4">4</button>
+          <button type="button" data-value="5">5</button>
+          <button type="button" data-value="6">6</button>
+          <button type="button" data-value="-">−</button>
+          <button type="button" data-value="1">1</button>
+          <button type="button" data-value="2">2</button>
+          <button type="button" data-value="3">3</button>
+          <button type="button" data-value="+">+</button>
+          <button type="button" class="calc-zero" data-value="0">0</button>
+          <button type="button" data-value=".">.</button>
+          <button type="button" class="calc-equals" data-action="equals">=</button>
         </div>
-        <div id="display" class="calculator-display">
-          <div id="expression">0</div>
-        </div>
-        <div class="calculator-grid">
-          <button class="calc-btn control" data-action="clear">C</button>
-          <button class="calc-btn control" data-action="toggle-sign">±</button>
-          <button class="calc-btn control" data-action="percent">%</button>
-          <button class="calc-btn operator" data-action="operator" data-value="/">÷</button>
+      </div>
+    </section>
 
-          <button class="calc-btn" data-action="number" data-value="7">7</button>
-          <button class="calc-btn" data-action="number" data-value="8">8</button>
-          <button class="calc-btn" data-action="number" data-value="9">9</button>
-          <button class="calc-btn operator" data-action="operator" data-value="*">×</button>
-
-          <button class="calc-btn" data-action="number" data-value="4">4</button>
-          <button class="calc-btn" data-action="number" data-value="5">5</button>
-          <button class="calc-btn" data-action="number" data-value="6">6</button>
-          <button class="calc-btn operator" data-action="operator" data-value="-">−</button>
-
-          <button class="calc-btn" data-action="number" data-value="1">1</button>
-          <button class="calc-btn" data-action="number" data-value="2">2</button>
-          <button class="calc-btn" data-action="number" data-value="3">3</button>
-          <button class="calc-btn operator" data-action="operator" data-value="+">+</button>
-
-          <button class="calc-btn zero" data-action="number" data-value="0">0</button>
-          <button class="calc-btn" data-action="number" data-value=".">.</button>
-          <button class="calc-btn operator" data-action="equals">=</button>
-        </div>
-      </article>
-    </div>
+    <script src="calc.js"></script>
   </body>
 </html>
