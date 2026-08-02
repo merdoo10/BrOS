@@ -9,25 +9,25 @@
         about: () => `BrOS Terminal\nA lightweight browser-based terminal for the BrOS environment.`,
         skills: () => `Skills: HTML, CSS, JavaScript, web apps, static UI`,
         projects: () => `BrOS     - Browser OS demo\nClick    - Idle clicker game\nMuzik    - Spotify-compatible music UI\nNotlar   - Notes app`,
-        contact: () => `Email: support@bros.local\nGitHub: github.com/merdoo10`,
+        contact: () => `Github.com/Jotaro-Kujo0\nGitHub.com/merdoo10`,
         neofetch: () => `BrOS 0.1.0\nTerminal: Web CLI\nBrowser: ${navigator.userAgent}`,
         date: () => new Date().toString(),
         fortune: () => {
           const fortunes = [
-            'Bugün harika bir gün olacak!',
-            'Kodunu yaz, sonra kahveni al.',
-            'Bir hata bulmak, iyileşmektir.',
-            'Her Click tıklamada daha da güçleniyorsun.',
-            'Müzik ve kod, birlikte daha iyi çalışır.',
+            "Today will be a wonderful day!",
+            "Write your code, then get your coffee.",
+            "Finding a bug is improving.",
+            "You grow stronger with every click.",
+            "Music and code work better together.",
           ];
           return fortunes[Math.floor(Math.random() * fortunes.length)];
         },
         weather: () => {
-          const conditions = ['☀️ Sunny', '🌧 Rainy', '🌙 Clear', '⛅ Cloudy', '🌈 Rainbow'];
+          const conditions = [' Sunny', ' Rainy', ' Clear', ' Cloudy', ' Rainbow'];
           const temp = Math.floor(Math.random() * 16 + 10);
           return `${conditions[Math.floor(Math.random() * conditions.length)]} | ${temp}°C`;
         },
-        cowsay: (text = 'BrOS is cute!') => {
+        cowsay: (text = 'Hell Yeah!') => {
           const top = ' ' + '_'.repeat(text.length + 2);
           const mid = `< ${text} >`;
           const bot = ' ' + '-'.repeat(text.length + 2);
@@ -41,6 +41,14 @@
         line.textContent = text;
         screen.appendChild(line);
         screen.scrollTop = screen.scrollHeight;
+      }
+      
+      function about(text, type = 'output') {
+        addLine('We are two teenagers from Turkey.', type);
+      }
+
+      function skills(text, type = 'output') {
+        addLine('We are skilled in many coding languages and engineering tools. Such as HTML, CSS, and JavaScript, Python, C++ and CAD tools.', type);
       }
 
       function runCommand(raw) {
@@ -64,7 +72,7 @@
           addLine(COMMANDS[name](args.join(' ')));
           return;
         }
-        addLine(`Komut bulunamadı: ${name}`, 'error');
+        addLine(`Command not found: ${name}`, 'error');
       }
 
       form.addEventListener('submit', (event) => {

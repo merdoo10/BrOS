@@ -1,18 +1,3 @@
-/* ============================================================================
- *  BrOS AI Chatbox — Jabbar Bot
- *  ----------------------------------------------------------------------------
- *  This file is loaded by src/apps/ai/ai.html and provides the expected
- *  browser-side contract:
- *
- *      window.aiBot = {
- *        name: 'Jabbar',
- *        version: '1.0.0',
- *        async respond(text, history) { return '...'; }
- *      };
- *
- *  It is intentionally simple and command-driven.
- * ============================================================================ */
-
 (function () {
   'use strict';
 
@@ -34,26 +19,10 @@
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-      // Ignore quota or private mode failures.
     }
   }
 
-  const MATH_PRELUDE = [
-    'const sqrt = Math.sqrt,',
-    '      pow  = Math.pow,',
-    '      log  = Math.log,',
-    '      ln   = Math.log,',
-    '      exp  = Math.exp,',
-    '      abs  = Math.abs,',
-    '      min  = Math.min,',
-    '      max  = Math.max,',
-    '      pi   = Math.PI,',
-    '      e    = Math.E;',
-  ].join('\n');
-
-  const FORBIDDEN = /(alert|prompt|confirm|console|window|document|fetch|eval|Function|setTimeout|setInterval|require|import|globalThis|self|prototype|constructor|__proto__|__|location|navigator|XMLHttpRequest|webkit)/i;
   const SAFE_CHARS_ONLY = /^[\d\s+\-*/^().,x]+$/;
-  const SAFE_FUNC_LEAD = /^(sqrt|pow|log|ln|exp|abs|min|max|pi|e)\b/i;
 
   function safeMath(expression) {
     if (typeof expression !== 'string') return null;
@@ -67,7 +36,6 @@
     const normalized = expr.replace(/\s*x\s*/gi, '*').replace(/\^/g, '**');
 
     try {
-      // eslint-disable-next-line no-new-func
       const fn = new Function(MATH_PRELUDE + '\nreturn (' + normalized + ');');
       const result = fn();
       return Number.isFinite(result) ? result : null;
@@ -80,6 +48,31 @@
     return items[Math.floor(Math.random() * items.length)];
   }
 
+  const UNKNOWN_RESPONSES = [
+    'You aint tellin me nothin',
+    'Let the bodies hit the floor',
+    'Grape juice is better for sure',
+    'Cabbar will handle it',
+    'Ill deliver a scathing remark that will leave you speechless.',
+    'Lets talk to his mother',
+    'Am I supposed to know my job from you soq soq',
+    'Eat less and hire a worker ',
+    'Oh shi, here we go again',
+    'So long suckers!',
+    'Man I love this game',
+    'Why are we paying taxes? That money should go to fun stuff. Like chicken nuggies and milshakes ',
+    'You re goddamn right',
+    'You forget a thousand things every day, pal. Make sure this is one of them',
+    'Does it help if I say that Im sorry?',
+    'You cant see California without Marlon Brandos eyes',
+    '2-3 years dagestan and forget.',
+    'Your the goat man. Keep it up',
+  ];
+
+  function unknownReply() {
+    return pick(UNKNOWN_RESPONSES);
+  }
+
   function rememberedName() {
     return loadJSON(KEYS.NAME, null);
   }
@@ -87,26 +80,21 @@
   function help() {
     return [
       'Jabbar commands:',
-      '/help - show this help',
-      '/time - show the current time',
-      '/date - show the current date',
-      '/roll - roll a die',
-      '/flip - flip a coin',
-      '/math <expression> - evaluate a safe expression',
-      '/todo <text> - add a task',
-      '/todos - list tasks',
-      '/name <name> - remember your name',
-      '/whoami - show your name',
-      '/clearname - forget your name',
-      '/about - about Jabbar',
-      'You can also talk to me normally.',
+      'help - show this message',
+      'time - show the current time',
+      'date - show the current date',
+      'roll - roll a die',
+      'flip - flip a coin',
+      'todo <text> - add a task',
+      'todos - list tasks',
+      'name <name> - remember your name',
+      'say my name - show your name',
+      'clearname - forget your name',
+      'about - about Jabbar',
     ].join('\n');
   }
 
   function runCommand(text) {
-    const trimmed = (text || '').trim();
-    if (!trimmed.startsWith('/')) return null;
-
     const parts = trimmed.slice(1).trim().split(/\s+/);
     const command = (parts.shift() || '').toLowerCase();
     const arg = parts.join(' ').trim();
@@ -123,11 +111,6 @@
         return 'Roll: ' + (1 + Math.floor(Math.random() * 6));
       case 'flip':
         return 'Flip: ' + (Math.random() < 0.5 ? 'Heads' : 'Tails');
-      case 'math': {
-        if (!arg) return 'Use /math with an expression such as 2 + 3 or sqrt(16).';
-        const value = safeMath(arg);
-        return value == null ? 'I could not evaluate that expression.' : 'Result: ' + value;
-      }
       case 'todo': {
         if (!arg) return 'Use /todo followed by a task.';
         const list = loadJSON(KEYS.TODOS, []);
@@ -144,15 +127,15 @@
         if (!arg) return 'Use /name followed by your name.';
         saveJSON(KEYS.NAME, arg);
         return 'Nice to meet you, ' + arg + '.';
-      case 'whoami':
-        return rememberedName() ? 'Your name is ' + rememberedName() + '.' : 'I do not know your name yet.';
+      case 'say my name':
+        return rememberedName() ? 'I remember you man, youre ' + rememberedName() + '.' : 'I do not know your name yet.';
       case 'clearname':
         saveJSON(KEYS.NAME, null);
-        return 'I forgot your name.';
+        return 'I forgot your name man.';
       case 'about':
-        return 'I am Jabbar, a simple local assistant. I can help with commands, math, tasks, and basic chat.';
+        return 'Yo yo yo. Jabbar here, best agent on the block. Ready to help homie. ';
       default:
-        return 'Unknown command. Try /help.';
+        return UNKNOWN_RESPONSES.includes(command) ? null : 'Unknown command: ' + command;
     }
   }
 
@@ -164,12 +147,10 @@
 
   window.aiBot = {
     name: 'Jabbar',
-    version: '1.0.0',
-    capabilities: ['commands', 'math', 'tasks', 'basic chat'],
     async respond(text, history) {
       const t = (text || '').trim();
       if (!t) {
-        return 'Say something or use /help.';
+        return 'Lets get started homie. Type help to see what I got';
       }
 
       const commandResult = runCommand(t);
@@ -177,9 +158,9 @@
         return commandResult;
       }
 
-      if (/^(hello|hi|hey|greetings?)\b/i.test(t)) {
+      if (/^(hello|hi|hey?)\b/i.test(t)) {
         const name = rememberedName();
-        return name ? 'Hello, ' + name + '.' : 'Hello. I am Jabbar.';
+        return name ? 'Hello, ' + name + '.' : 'Wassup. Im Jabbar.';
       }
 
       if (/^(how are you|how are you doing)\b/i.test(t)) {
@@ -194,16 +175,12 @@
         return 'Goodbye.';
       }
 
-      if (/^(who are you|what is your name)\b/i.test(t)) {
-        return 'I am Jabbar, a simple local assistant.';
-      }
-
       const math = tryMath(t);
       if (math !== null) {
         return math;
       }
 
-      return 'I did not understand that. Try /help for available commands.';
+      return unknownReply();
     },
   };
 
