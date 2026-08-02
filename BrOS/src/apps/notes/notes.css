@@ -88,4 +88,20 @@
         text-align: center;
         margin-top: 80px;
       }
-    
+  .add-note-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: Geist Pixel;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .plus-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
