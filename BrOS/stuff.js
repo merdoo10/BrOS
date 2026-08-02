@@ -362,7 +362,7 @@ function launchAppWindow(url, title, appId) {
     const safeId = (appId || url).replace(/[^a-z0-9-]/gi, '-');
     const existing = document.getElementById(`window-${safeId}`);
     if (existing) {
-        bringWindowToFront(existing);
+        openWindow(existing);
         return;
     }
 
@@ -591,4 +591,4 @@ function updateClock() {
 
 
 setInterval(updateClock, 1000);
-updateClock(); 
+updateClock();
