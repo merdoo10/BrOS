@@ -19,10 +19,26 @@
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
+      // Ignore quota or private mode failures.
     }
   }
 
+  const MATH_PRELUDE = [
+    'const sqrt = Math.sqrt,',
+    '      pow  = Math.pow,',
+    '      log  = Math.log,',
+    '      ln   = Math.log,',
+    '      exp  = Math.exp,',
+    '      abs  = Math.abs,',
+    '      min  = Math.min,',
+    '      max  = Math.max,',
+    '      pi   = Math.PI,',
+    '      e    = Math.E;',
+  ].join('\n');
+
+  const FORBIDDEN = /(alert|prompt|confirm|console|window|document|fetch|eval|Function|setTimeout|setInterval|require|import|globalThis|self|prototype|constructor|__proto__|__|location|navigator|XMLHttpRequest|webkit)/i;
   const SAFE_CHARS_ONLY = /^[\d\s+\-*/^().,x]+$/;
+  const SAFE_FUNC_LEAD = /^(sqrt|pow|log|ln|exp|abs|min|max|pi|e)\b/i;
 
   function safeMath(expression) {
     if (typeof expression !== 'string') return null;
@@ -95,6 +111,9 @@
   }
 
   function runCommand(text) {
+    const trimmed = (text || '').trim();
+    if (!trimmed.startsWith('/')) return null;
+
     const parts = trimmed.slice(1).trim().split(/\s+/);
     const command = (parts.shift() || '').toLowerCase();
     const arg = parts.join(' ').trim();
@@ -135,7 +154,7 @@
       case 'about':
         return 'Yo yo yo. Jabbar here, best agent on the block. Ready to help homie. ';
       default:
-        return UNKNOWN_RESPONSES.includes(command) ? null : 'Unknown command: ' + command;
+        return 'Unknown command. Try /help.';
     }
   }
 

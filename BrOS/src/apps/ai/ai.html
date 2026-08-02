@@ -54,28 +54,6 @@
     <script src="bot.js"></script>
 
     <script>
-      /* ============================================================
-       * BrOS AI Chatbox — UI shell
-       * ------------------------------------------------------------
-       * The bot LOGIC is intentionally NOT included here.
-       *
-       * Wire up your own bot by setting:
-       *
-       *   window.aiBot = {
-       *     async respond(text, history) {
-       *       // text    : the latest user message (string)
-       *       // history : Array<{ role: 'user' | 'bot', text: string }>
-       *       // return  : a string (plain text or markdown-lite)
-       *     }
-       *   };
-       *
-       * You can do this inline in this file (at the very bottom of
-       * this <script>, after the shell boots) or by serving a second
-       * JS file and loading it before this page.
-       *
-       * If no bot is attached yet, the UI shows a friendly error
-       * bubble explaining what to do — so it's safe to ship as-is.
-       * ============================================================ */
 
       const STORAGE_KEY = 'ai-chat-history-v1';
       const chatLogEl   = document.getElementById('ai-chat-log');
@@ -89,7 +67,7 @@
       const history = loadHistory();
       let requestInFlight = false;
 
-      /* ---------- helpers ---------- */
+      
 
       function loadHistory() {
         try {
@@ -105,7 +83,7 @@
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
         } catch (e) {
-          /* localStorage quota or private mode — silent ignore. */
+        
         }
       }
 
@@ -116,11 +94,10 @@
           .replace(/>/g, '&gt;');
       }
 
-      // Tiny markdown renderer — keeps the deps zero. Replace with a
-      // full library if you need more (e.g. headings, tables, links).
+    
       function renderMarkdown(text) {
         const safe = escapeHtml(text);
-        // Code fences first (so ``` inside <pre> isn't later mangled).
+       
         return safe
           .replace(/```([\s\S]*?)```/g, (_, code) => `<pre>${code}</pre>`)
           .replace(/`([^`\n]+)`/g,        (_, code) => `<code>${code}</code>`)
@@ -147,14 +124,14 @@
       }
 
       function renderInitial() {
-        // Strip previous message nodes (everything except the empty placeholder).
+
         chatLogEl.querySelectorAll('.ai-msg, .ai-meta').forEach(el => el.remove());
         if (history.length === 0) {
           emptyEl.style.display = 'block';
         } else {
           emptyEl.style.display = 'none';
           history.forEach((msg) => appendMessageNode(msg.role, msg.text, false));
-          // Pin to bottom on initial load so newest message is visible.
+          
           chatLogEl.scrollTop = chatLogEl.scrollHeight;
         }
       }
@@ -191,7 +168,6 @@
         return wrap;
       }
 
-      /* ---------- submit (user → bot) ---------- */
 
       async function handleSubmit(event) {
         event.preventDefault();
@@ -246,7 +222,7 @@
         }
       }
 
-      /* ---------- wire up events ---------- */
+      
 
       inputEl.addEventListener('input', autoSizeInput);
       inputEl.addEventListener('keydown', (event) => {
@@ -269,25 +245,12 @@
         updateScrollButton();
       });
 
-      /* ---------- boot ---------- */
       renderInitial();
       autoSizeInput();
     </script>
 
-    <!--
-      ============================================================
-      ÖRNEK BOT (çalışır halde) — kendi bot mantığınızla değiştirin
-      ============================================================
-      Bu bloğu açıp / yorumdan çıkarabilirsiniz. Test amaçlıdır:
-
-      <script>
-        window.aiBot = {
-          async respond(text, history) {
-            const echo = (Math.random() < 0.5) ? 'Anladım: ' : 'Hmm, ';
-            return echo + text + '\n\n(Kendi bot mantığınızı yazın — örn. bir LLM API, yerel arama, komut çalıştırma, vs.)';
-          }
-        };
+   
       </script>
-    -->
+    
   </body>
 </html>
