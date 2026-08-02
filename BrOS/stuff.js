@@ -95,9 +95,7 @@ function dragElement(element, handle = element) {
         event.preventDefault();
         event.stopPropagation();
 
-        // Snapshot the mouse position and the element's real rendered
-        // position ONCE at drag start, instead of re-reading offsetLeft/Top
-        // on every mousemove (which forces a layout reflow and causes lag).
+
         startX = event.clientX;
         startY = event.clientY;
         startLeft = element.offsetLeft;
@@ -114,9 +112,6 @@ function dragElement(element, handle = element) {
     function dragElementMouse(event) {
         event.preventDefault();
 
-        // Always measure the total delta from the drag's starting point,
-        // never from the last frame — this keeps the element locked
-        // exactly to the cursor with zero drift, however fast you move.
         pendingX = event.clientX - startX;
         pendingY = event.clientY - startY;
 
@@ -284,8 +279,6 @@ function resizeElement(element, handle, direction) {
         event.preventDefault();
         event.stopPropagation();
 
-        // Mirror dragElement's snapshot at the start so we don't force a
-        // layout reflow on every mousemove.
         startX = event.clientX;
         startY = event.clientY;
         startLeft = element.offsetLeft;
@@ -304,9 +297,7 @@ function resizeElement(element, handle, direction) {
     function resizeMouse(event) {
         event.preventDefault();
 
-        // Always measure total delta from the start of the resize so the
-        // edge stays locked exactly to the cursor, same drift-free guarantee
-        // as dragElement.
+    
         pendingX = event.clientX - startX;
         pendingY = event.clientY - startY;
 
@@ -334,9 +325,7 @@ function resizeElement(element, handle, direction) {
                     newHeight = startHeight + pendingY;
                 }
 
-                // Snap to minimums while keeping the opposite edge pinned —
-                // back-compute the moving edge so the resize feels solid,
-                // not rubbery, at the minimum boundary.
+                
                 if (newWidth < MIN_WIDTH) {
                     if (isLeft) {
                         newLeft = startLeft + startWidth - MIN_WIDTH;
@@ -381,8 +370,6 @@ function launchAppWindow(url, title, appId) {
     win.className = 'window desktop-app';
     win.id = `window-${safeId}`;
 
-    // Cascade new windows so they don't stack exactly on top of each other.
-    // Count only OPEN windows so closed ones don't permanently eat the offset.
     const openWindows = document.querySelectorAll('.desktop-app[data-open="true"]').length;
     const step = Math.min(openWindows, 6) * 30;
     const winWidth = Math.min(900, window.innerWidth * 0.92);
@@ -413,9 +400,6 @@ function launchAppWindow(url, title, appId) {
     const backButton = header.querySelector('.win-back');
     const iframe = win.querySelector('iframe');
 
-    // Corner resize handles, one per corner. The handle's mousedown calls
-    // stopPropagation, so even though they live inside the window, they
-    // never bubble up into the header's drag listener.
     const cornerDirections = ['nw', 'ne', 'sw', 'se'];
     cornerDirections.forEach((direction) => {
         const handle = document.createElement('div');
@@ -427,14 +411,12 @@ function launchAppWindow(url, title, appId) {
     dragElement(win, header);
     openWindow(win);
 
-    // Dynamic .window elements weren't around when initializeWindowControls
-    // attached its per-window bring-to-front listener, so wire it up here.
+    
     win.addEventListener('mousedown', () => {
         bringWindowToFront(win);
     });
 
-    // Stop mousedown on the header buttons bubbling to the header's drag
-    // listener — otherwise clicking ×/← briefly starts dragging the window.
+    
     closeButton.addEventListener('mousedown', (event) => {
         event.stopPropagation();
     });
@@ -442,14 +424,13 @@ function launchAppWindow(url, title, appId) {
         event.stopPropagation();
     });
 
-    // Hide any "Back to BrOS" button inside the app so users can't
-    // accidentally reload bros.html *inside* the iframe.
+    
     const hideInternalBackButton = () => {
         try {
             const backBtn = iframe.contentDocument.querySelector('.back-button');
             if (backBtn) backBtn.style.display = 'none';
         } catch (error) {
-            // file:// protocol (or cross-origin iframe) — harmless.
+            
         }
     };
     iframe.addEventListener('load', hideInternalBackButton);
@@ -464,14 +445,13 @@ function launchAppWindow(url, title, appId) {
         try {
             iframe.contentWindow.history.back();
         } catch (error) {
-            // Empty history or cross-origin — just ignore.
+            
         }
     });
 }
 
 function initializeAppLaunchers() {
-    // Note: preventDefault is omitted because the button elements we attach to
-    // don't navigate — calling it would be dead code that confuses readers.
+    
     document.querySelectorAll('[data-app-url]').forEach((element) => {
         element.addEventListener('click', () => {
             const url = element.dataset.appUrl;
@@ -598,7 +578,7 @@ function updateClock() {
     
     const seconds = date.getSeconds();
     const minutes = date.getMinutes();
-    const hours = date.getHours() % 12; // 12 saatlik formata çevir
+    const hours = date.getHours() % 12;
 
     const secondsDegrees = (seconds / 60) * 360;
     const minutesDegrees = (minutes / 60) * 360 + (seconds / 60) * 6;
@@ -609,6 +589,6 @@ function updateClock() {
     hourHand.style.transform = `translateX(-50%) rotate(${hoursDegrees}deg)`;
 }
 
-// Saatin her saniye çalışmasını sağla
+
 setInterval(updateClock, 1000);
-updateClock(); // Sayfa yüklendiğinde hemen çalıştır
+updateClock(); 

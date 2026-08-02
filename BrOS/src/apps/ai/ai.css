@@ -1,5 +1,4 @@
 
-      /* ========== Chatbox shell ========== */
       html, body { height: 100%; }
       body { overflow: hidden; }
 
@@ -23,7 +22,7 @@
         flex-direction: column;
         gap: 14px;
         scroll-behavior: smooth;
-        /* Subtle fade at top so very long histories still show the boundary */
+    
         mask-image: linear-gradient(to bottom, transparent 0, #000 14px);
         -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px);
       }
@@ -115,7 +114,6 @@
       .ai-msg.user .ai-meta { text-align: right; align-self: flex-end; margin-right: 4px; }
       .ai-msg.bot  .ai-meta { text-align: left;  align-self: flex-start; margin-left: 4px; }
 
-      /* ========== Empty state ========== */
       .ai-empty {
         text-align: center;
         margin: 14vh auto 0;
@@ -157,7 +155,7 @@
         font-size: 13px;
       }
 
-      /* ========== Input row ========== */
+      
       .ai-input-row {
         display: flex;
         gap: 8px;
@@ -210,7 +208,7 @@
       .ai-send:active:not(:disabled) { transform: translateY(0) scale(0.98); }
       .ai-send:disabled { opacity: 0.45; cursor: not-allowed; }
 
-      /* ========== Toolbar (clear button + scroll-to-bottom floater) ========== */
+  
       .ai-toolbar {
         position: fixed;
         top: 14px;
@@ -254,7 +252,6 @@
       .ai-scroll-btn.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
       .ai-scroll-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
-      /* Mobile-ish narrow window: shrink input padding */
       @media (max-width: 480px) {
         .ai-shell { padding: 48px 8px 0; }
         .ai-bubble { max-width: 95%; }

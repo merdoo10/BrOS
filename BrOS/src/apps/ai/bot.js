@@ -1,17 +1,4 @@
-/* ============================================================================
- *  BrOS AI Chatbox — Jabbar Bot
- *  ----------------------------------------------------------------------------
- *  This file is loaded by src/apps/ai/ai.html and provides the expected
- *  browser-side contract:
- *
- *      window.aiBot = {
- *        name: 'Jabbar',
- *        version: '1.0.0',
- *        async respond(text, history) { return '...'; }
- *      };
- *
- *  It is intentionally simple and command-driven.
- * ============================================================================ */
+
 
 (function () {
   'use strict';
@@ -34,7 +21,7 @@
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-      // Ignore quota or private mode failures.
+
     }
   }
 
@@ -67,7 +54,7 @@
     const normalized = expr.replace(/\s*x\s*/gi, '*').replace(/\^/g, '**');
 
     try {
-      // eslint-disable-next-line no-new-func
+      
       const fn = new Function(MATH_PRELUDE + '\nreturn (' + normalized + ');');
       const result = fn();
       return Number.isFinite(result) ? result : null;
